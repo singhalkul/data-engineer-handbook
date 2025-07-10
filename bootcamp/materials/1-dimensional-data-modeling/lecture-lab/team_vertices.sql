@@ -1,3 +1,4 @@
+insert into vertices
 WITH teams_deduped AS (
     SELECT *, ROW_NUMBER() OVER(PARTITION BY team_id) as row_num
     FROM teams
