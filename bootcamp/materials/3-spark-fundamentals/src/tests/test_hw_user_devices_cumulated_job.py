@@ -1,5 +1,5 @@
 from chispa.dataframe_comparer import assert_df_equality
-from ..jobs.user_devices_cumulated_job import do_user_devices_cumulated_transformation
+from ..jobs.hw_user_devices_cumulated_job import do_user_devices_cumulated_transformation
 from collections import namedtuple
 import datetime
 
