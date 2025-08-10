@@ -38,15 +38,3 @@ def do_user_devices_cumulated_transformation(spark, cumulated_df, events_df, dev
 	FULL OUTER JOIN today t ON t.user_id = y.user_id AND t.browser_type = y.browser_type;
 	"""
     return spark.sql(query)
-
-# Example main for demonstration (not used in test)
-def main():
-	spark = SparkSession.builder \
-		.master("local") \
-		.appName("user_devices_cumulated") \
-		.getOrCreate()
-	events_df = spark.table("events")
-	devices_df = spark.table("devices")
-	process_date = "2023-01-01"
-	output_df = do_user_devices_cumulated_transformation(spark, events_df, devices_df, process_date)
-	output_df.write.mode("overwrite").insertInto("user_devices_cumulated")
