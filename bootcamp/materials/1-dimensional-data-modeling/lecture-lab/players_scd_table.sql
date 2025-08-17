@@ -4,7 +4,7 @@ create table players_scd
 	scoring_class scoring_class,
 	is_active boolean,
 	start_season integer,
-	end_date integer,
+	end_season integer,
 	current_season INTEGER
 );
 
