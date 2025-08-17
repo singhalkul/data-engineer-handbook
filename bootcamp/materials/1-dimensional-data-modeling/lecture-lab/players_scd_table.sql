@@ -1,4 +1,4 @@
-create table players_scd_table
+create table players_scd
 (
 	player_name text,
 	scoring_class scoring_class,
