@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 flink:1.16.2
+FROM flink:1.16.2
 
 # install python3: it has updated Python to 3.9 in Debian 11 and so install Python 3.7 from source
 # it currently only supports Python 3.6, 3.7 and 3.8 in PyFlink officially.
@@ -16,18 +16,19 @@ ln -s /usr/local/bin/python3 /usr/local/bin/python && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
 
-# install PyFlink
-COPY requirements.txt .
-RUN python -m pip install --upgrade pip; \
-    pip3 install -r requirements.txt  --no-cache-dir;
-
-# Install Java 11
+# Install Java 11 first (required for PyFlink compilation)
 RUN apt-get update && \
     apt-get install -y openjdk-11-jdk && \
     apt-get clean;
 
 # Set environment variables
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64
+
+
+# install PyFlink (now that JDK is available)
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip; \
+    pip3 install -r requirements.txt  --no-cache-dir;
 
 
 # Download connector libraries

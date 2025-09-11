@@ -5,7 +5,7 @@ services:
     pull_policy: never
     container_name: "jobmanager"
     hostname: "jobmanager"
-    platform: "linux/amd64"
+    platform: "linux/arm64"
     env_file:
       - flink-env.env
     expose:
@@ -32,7 +32,7 @@ services:
     image: eczachly-pyflink
     pull_policy: never
     container_name: "taskmanager"
-    platform: "linux/amd64"
+    platform: "linux/arm64"
     env_file:
       - flink-env.env
     expose:

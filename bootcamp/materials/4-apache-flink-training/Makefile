@@ -1,7 +1,5 @@
 include flink-env.env
 
-PLATFORM ?= linux/amd64
-
 # COLORS
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -31,40 +29,40 @@ help:
 .PHONY: build
 ## Builds the Flink base image with pyFlink and connectors installed
 build:
-	docker build --platform ${PLATFORM} -t ${IMAGE_NAME} .
+	docker build -t ${IMAGE_NAME} .
 
 .PHONY: up
 ## Builds the base Docker image and starts Flink cluster
 up:
-	docker compose --env-file flink-env.env up --build --remove-orphans  -d
+	docker-compose --env-file flink-env.env up --build --remove-orphans  -d
 
 .PHONY: down
 ## Shuts down the Flink cluster
 down:
-	docker compose down --remove-orphans
+	docker-compose down --remove-orphans
 
 .PHONY: job
 ## Submit the Flink job
 job:
-	docker compose exec jobmanager ./bin/flink run -py /opt/src/job/start_job.py --pyFiles /opt/src -d
+	docker-compose exec jobmanager ./bin/flink run -py /opt/src/job/start_job.py --pyFiles /opt/src -d
 
 aggregation_job:
-	docker compose exec jobmanager ./bin/flink run -py /opt/src/job/aggregation_job.py --pyFiles /opt/src -d
+	docker-compose exec jobmanager ./bin/flink run -py /opt/src/job/aggregation_job.py --pyFiles /opt/src -d
 
 .PHONY: stop
 ## Stops all services in Docker compose
 stop:
-	docker compose stop
+	docker-compose stop
 
 .PHONY: start
 ## Starts all services in Docker compose
 start:
-	docker compose start
+	docker-compose start
 
 .PHONY: clean
 ## Stops and removes the Docker container as well as images with tag `<none>`
 clean:
-	docker compose stop
+	docker-compose stop
 	docker ps -a --format '{{.Names}}' | grep "^${CONTAINER_PREFIX}" | xargs -I {} docker rm {}
 	docker images | grep "<none>" | awk '{print $3}' | xargs -r docker rmi
 	# Uncomment line `docker rmi` if you want to remove the Docker image from this set up too
